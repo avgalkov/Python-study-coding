@@ -1,0 +1,17 @@
+docker volume create clickhouse_vol
+docker network create app_net
+
+docker run -d --rm --net =app_net -p 8080:8088 --name superset apache/superset
+
+docker exec -it superset superset fab create-admin --username admin --firstname Superset --lastname Admin --email admin@superset.com --password admin
+
+docker exec -it superset superset db upgrade
+
+docker exec -it superset superset init
+
+docker exec superset pip install clickhouse-sqlalchemy
+
+docker restart superset
+
+
+
